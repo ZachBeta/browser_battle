@@ -2,12 +2,12 @@
 
 <p>
   <strong>Current player:</strong>
-  <%= @game.current_player_id %>
+  <%= @game.current_player.inspect %>
 </p>
 
 <p>
   <strong>Other player:</strong>
-  <%= @game.other_player_id %>
+  <%= @game.other_player.inspect %>
 </p>
 
 <%= link_to 'Edit', edit_game_path(@game) %> |

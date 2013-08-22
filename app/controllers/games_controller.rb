@@ -25,6 +25,9 @@ class GamesController < ApplicationController
   # POST /games.json
   def create
     @game = Game.new(game_params)
+    player_defaults = { :rock_health => 50, :paper_health => 50, :scissor_health => 50, :current_monster => 'rock' }
+    @game.build_current_player(player_defaults)
+    @game.build_other_player(player_defaults)
 
     respond_to do |format|
       if @game.save
@@ -69,6 +72,6 @@ class GamesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def game_params
-      params.require(:game).permit(:current_player_id, :other_player_id)
+      params.require(:game).permit(:current_player_id, :other_player_id, :action)
     end
 end
