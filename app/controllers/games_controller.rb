@@ -21,9 +21,7 @@ class GamesController < ApplicationController
   # POST /games.json
   def create
     @game = Game.new(game_params)
-    player_defaults = { :rock_health => 50, :paper_health => 50, :scissor_health => 50, :current_monster => 'rock' }
-    @game.build_current_player(player_defaults)
-    @game.build_other_player(player_defaults)
+    @game.build_players
 
     respond_to do |format|
       if @game.save
