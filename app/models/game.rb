@@ -7,6 +7,12 @@ class Game < ActiveRecord::Base
 
   attr_accessor :action
 
+  def switch_players!
+    player = current_player
+    self.current_player= other_player
+    self.other_player= player
+  end
+
   def build_players
     player_defaults = { :rock_health => 50, :paper_health => 50, :scissor_health => 50, :current_monster => 'rock' }
     build_current_player(player_defaults)
