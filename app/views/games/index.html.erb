@@ -16,9 +16,7 @@
       <tr>
         <td><%= game.current_player_id %></td>
         <td><%= game.other_player_id %></td>
-        <td><%= link_to 'Show', game %></td>
-        <td><%= link_to 'Edit', edit_game_path(game) %></td>
-        <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Play', game %></td>
       </tr>
     <% end %>
   </tbody>

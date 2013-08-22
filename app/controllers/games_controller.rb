@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: [:show, :edit, :update, :destroy]
+  before_action :set_game, only: [:show, :update]
 
   # GET /games
   # GET /games.json
@@ -15,10 +15,6 @@ class GamesController < ApplicationController
   # GET /games/new
   def new
     @game = Game.new
-  end
-
-  # GET /games/1/edit
-  def edit
   end
 
   # POST /games
@@ -48,19 +44,9 @@ class GamesController < ApplicationController
         format.html { redirect_to @game, notice: 'Game was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { redirect_to :back }
         format.json { render json: @game.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /games/1
-  # DELETE /games/1.json
-  def destroy
-    @game.destroy
-    respond_to do |format|
-      format.html { redirect_to games_url }
-      format.json { head :no_content }
     end
   end
 

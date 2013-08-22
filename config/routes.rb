@@ -1,5 +1,5 @@
 BrowserBattle::Application.routes.draw do
-  resources :games
+  resources :games, :except => [:edit, :destroy]
   root 'games#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
