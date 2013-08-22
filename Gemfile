@@ -5,6 +5,7 @@ gem 'rails', '4.0.0'
 gem 'rspec-rails'
 gem 'guard'
 gem 'guard-rspec'
+gem 'debugger'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
