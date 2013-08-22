@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130821043247) do
+ActiveRecord::Schema.define(version: 20130822032858) do
 
   create_table "games", force: true do |t|
     t.integer  "current_player_id"
@@ -21,7 +21,6 @@ ActiveRecord::Schema.define(version: 20130821043247) do
   end
 
   create_table "players", force: true do |t|
-    t.integer  "game_id"
     t.integer  "rock_health"
     t.integer  "paper_health"
     t.integer  "scissor_health"
