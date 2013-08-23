@@ -1,5 +1,10 @@
 require 'spec_helper'
 
 describe Player do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '#current_monster_health' do
+    it 'provides the current monsters health' do
+      player = Player.new(:rock_health => 42, :current_monster => 'rock')
+      player.current_monster_health.should == 42
+    end
+  end
 end
