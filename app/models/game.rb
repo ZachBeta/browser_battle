@@ -27,11 +27,16 @@ class Game < ActiveRecord::Base
 
   def action=(action)
     if action == 'attack'
+      @notice_message = "Player #{current_player.id} attacked Player #{other_player.id} for #{roll_damage} damage"
       other_player.rock_health -= roll_damage
       switch_players!
       save
     end
     # player has chosen to do `action`
+  end
+
+  def notice_message
+    @notice_message ||= 'Game updated, yo!'
   end
 
   def roll_damage
