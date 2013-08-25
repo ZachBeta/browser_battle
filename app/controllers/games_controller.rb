@@ -20,8 +20,7 @@ class GamesController < ApplicationController
   # POST /games
   # POST /games.json
   def create
-    @game = Game.new(game_params)
-    @game.build_players
+    @game = Game.new_with_defaults(game_params)
 
     respond_to do |format|
       if @game.save

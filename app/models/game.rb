@@ -1,4 +1,6 @@
 class Game < ActiveRecord::Base
+  belongs_to :player_one, :class_name => 'Player'
+  belongs_to :player_two, :class_name => 'Player'
   belongs_to :current_player, :class_name => 'Player'
   belongs_to :other_player, :class_name => 'Player'
 
@@ -13,22 +15,34 @@ class Game < ActiveRecord::Base
     self.other_player= player
   end
 
-  # handle player 1 and player 2 for view
+  # TODO: handle player 1 and player 2 for view
+  #
+  def self.new_with_defaults(game_params = nil)
+    game = Game.new(game_params)
+    game.current_player = Player.new
+    game.player_one = game.current_player
+    game.other_player = Player.new
+    game.player_two = game.other_player
 
-  def build_players
-    player_defaults = { :rock_health => 50, :paper_health => 50, :scissor_health => 50, :current_monster => 'rock' }
-    build_current_player(player_defaults)
-    build_other_player(player_defaults)
+    game.players.each do |player|
+      player.monsters.build(:monster_type => 'rock', :health => 50, :status => 'active')
+      player.monsters.build(:monster_type => 'paper', :health => 50)
+      player.monsters.build(:monster_type => 'scissors', :health => 50)
+    end
+
+    game
   end
 
   def players
-    [current_player, other_player]
+    [player_one, player_two]
   end
 
   def action=(action)
     if action == 'attack'
-      @notice_message = "Player #{current_player.id} attacked Player #{other_player.id} for #{roll_damage} damage"
-      other_player.rock_health -= roll_damage
+      damage = roll_damage
+      @notice_message = "Player #{current_player.id} attacked Player #{other_player.id} for #{damage} damage"
+      other_player.current_monster.health -= damage
+      other_player.current_monster.save
       switch_players!
       save
     end

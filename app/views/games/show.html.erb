@@ -5,10 +5,18 @@
   <%= @game.current_player.inspect %>
 </p>
 
-<p>
-  <strong>Other player:</strong>
-  <%= @game.other_player.inspect %>
-</p>
+  <% @game.players.each do |player| %>
+    <p>
+    <%= player.inspect %>
+    <ol>
+      <% player.monsters.each do |monster| %>
+        <li>
+          <%= monster.inspect %>
+        </li>
+      <% end %>
+    </ol>
+  </p>
+  <% end %>
 
 <%= form_for(@game) do |f| %>
   <%= f.hidden_field :action, :value => 'attack' %>

@@ -1,13 +1,11 @@
 class Player < ActiveRecord::Base
+  has_many :monsters, :order => 'created_at ASC'
+
   def current_monster_health
-    if current_monster == 'rock'
-      rock_health
-    elsif current_monster == 'paper'
-      paper_health
-    elsif current_monster == 'scissors'
-      scissor_health
-    else
-      0
-    end
+    current_monster.health
+  end
+
+  def current_monster
+    monsters.where(:status => 'active').limit(1).first
   end
 end

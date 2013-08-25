@@ -11,20 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130822032858) do
+ActiveRecord::Schema.define(version: 20130825181529) do
 
   create_table "games", force: true do |t|
     t.integer  "current_player_id"
     t.integer  "other_player_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "player_one_id"
+    t.integer  "player_two_id"
+  end
+
+  create_table "monsters", force: true do |t|
+    t.integer  "player_id"
+    t.string   "monster_type"
+    t.integer  "health"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status"
   end
 
   create_table "players", force: true do |t|
-    t.integer  "rock_health"
-    t.integer  "paper_health"
-    t.integer  "scissor_health"
-    t.string   "current_monster"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
