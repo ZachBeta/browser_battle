@@ -3,6 +3,8 @@ class Monster < ActiveRecord::Base
     damage = calculate_roll_damage
     target_monster.health -= damage
     target_monster.save
+
+    { :message => "Attacked for #{damage} damage" }
   end
 
   def calculate_roll_damage
@@ -14,6 +16,7 @@ class Monster < ActiveRecord::Base
   def damage_modifier
     1
   end
+
   # def damage_modifier
   #   if current_player.current_monster == 'rock' && other_player.current_monster == 'rock'
   #     1

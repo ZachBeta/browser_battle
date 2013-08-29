@@ -19,6 +19,11 @@
   <% end %>
 
 <%= form_for(@game) do |f| %>
+  <%= f.hidden_field :action, :value => 'switch' %>
+  <%= f.select :switch_monster, @game.current_player.monsters.map { |monster| ["#{monster.monster_type}: #{monster.health}HP", monster.id] } %>
+  <%= f.submit 'Switch!' %>
+<% end %>
+<%= form_for(@game) do |f| %>
   <%= f.hidden_field :action, :value => 'attack' %>
   <%= f.submit 'Attack!' %>
 <% end %>

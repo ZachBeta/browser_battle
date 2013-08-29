@@ -35,7 +35,7 @@ class GamesController < ApplicationController
   # PATCH/PUT /games/1.json
   def update
     respond_to do |format|
-      if @game.update(game_params)
+      if @game.handle_action(game_params)
         format.html { redirect_to @game, notice: @game.notice_message }
       else
         format.html { redirect_to :back }
@@ -51,6 +51,6 @@ class GamesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def game_params
-      params.require(:game).permit(:current_player_id, :other_player_id, :action)
+      params.require(:game).permit(:current_player_id, :other_player_id, :action, :switch_monster)
     end
 end

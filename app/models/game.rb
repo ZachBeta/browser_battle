@@ -7,7 +7,7 @@ class Game < ActiveRecord::Base
   accepts_nested_attributes_for :current_player
   accepts_nested_attributes_for :other_player
 
-  attr_accessor :action
+  attr_accessor :action, :switch_monster
 
   def switch_players_and_save!
     player = current_player
@@ -38,15 +38,35 @@ class Game < ActiveRecord::Base
     [player_one, player_two]
   end
 
-  def action=(action)
-    current_player_monster = current_player.current_monster
-    other_player_monster = other_player.current_monster
+  def handle_action(params)
+    action = params[:action]
+    new_monster_id = params[:switch_monster]
 
-    if action == 'attack'
-      current_player_monster.attack!(other_player_monster)
+    unless action == 'create'
+      current_player_monster = current_player.current_monster
+      other_player_monster = other_player.current_monster
+
+      if action == 'attack'
+        results = current_player_monster.attack!(other_player_monster)
+        @notice_message = results[:message]
+      elsif action == 'switch'
+        new_monster = current_player.monsters.where(:id => new_monster_id).first
+        if new_monster
+          current_monster = current_player.current_monster
+          current_monster.status = 'waiting'
+          current_monster.save
+
+          new_monster.status = 'active'
+          new_monster.save
+          @notice_message = "switched to #{new_monster.monster_type}"
+        else
+          @notice_message = "That monster doesn't exist for player #{current_player.id}, turn skipped :-("
+        end
+      end
+
       switch_players_and_save!
+      # player has chosen to do `action`
     end
-    # player has chosen to do `action`
   end
 
   def notice_message
