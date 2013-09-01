@@ -1,4 +1,6 @@
 class Monster < ActiveRecord::Base
+  default_scope { order('created_at DESC') }
+
   def attack!(target_monster)
     damage = calculate_roll_damage
     target_monster.health -= damage

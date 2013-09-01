@@ -16,8 +16,6 @@ class Game < ActiveRecord::Base
     save
   end
 
-  # TODO: handle player 1 and player 2 for view
-  #
   def self.new_with_defaults(game_params = nil)
     game = Game.new(game_params)
     game.current_player = Player.new
@@ -26,9 +24,7 @@ class Game < ActiveRecord::Base
     game.player_two = game.other_player
 
     game.players.each do |player|
-      player.monsters.build(:monster_type => 'rock', :health => 50, :status => 'active')
-      player.monsters.build(:monster_type => 'paper', :health => 50)
-      player.monsters.build(:monster_type => 'scissors', :health => 50)
+      player.build_default_monsters
     end
 
     game
@@ -41,27 +37,13 @@ class Game < ActiveRecord::Base
   def handle_action(params)
     action = params[:action]
     new_monster_id = params[:switch_monster]
-
     unless action == 'create'
-      current_player_monster = current_player.current_monster
-      other_player_monster = other_player.current_monster
-
       if action == 'attack'
-        results = current_player_monster.attack!(other_player_monster)
+        results = current_player.attack!(other_player)
         @notice_message = results[:message]
       elsif action == 'switch'
-        new_monster = current_player.monsters.where(:id => new_monster_id).first
-        if new_monster
-          current_monster = current_player.current_monster
-          current_monster.status = 'waiting'
-          current_monster.save
-
-          new_monster.status = 'active'
-          new_monster.save
-          @notice_message = "switched to #{new_monster.monster_type}"
-        else
-          @notice_message = "That monster doesn't exist for player #{current_player.id}, turn skipped :-("
-        end
+        results = current_player.switch_monsters!(new_monster_id)
+        @notice_message = results[:message]
       end
 
       switch_players_and_save!
@@ -72,5 +54,4 @@ class Game < ActiveRecord::Base
   def notice_message
     @notice_message ||= 'Game updated, yo!'
   end
-
 end
