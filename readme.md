@@ -1,36 +1,24 @@
-# Version 0
-
-Game
-current_player:integer
-player_one_health:integer
-player_two_health:integer
-
-Pick one to go first
-Each rolls a d20
-If roll is 1 deal self 5 damage
-If roll is 20 deal 25 damage
-Else deal roll damage
-
-
-# Version 1
-
-Game
-current_player:integer
-
-Player
-game_id:integer
-position:integer # 1 or 2
-bird_health:integer # 50
-stone_health:integer # 50
-water_health:integer # 50
-current_monster:string
+    # TODO:
+    # things to figure out
+    # who should know about a monster being dead?
+    # how should turns be handled? a game probably isn't the best for that, maybe a game turn?
+    # feels like test coverage is still low
+    # this handle action method knows too much
+    # a player should not be able to switch to a monster if it's dead
+    # monsters should deal weighted damage
+    #
+    #
+    # controller - route the params to the right place
+    # model - persist data and handle relationships
+    # service object - handle multiple objects together
+    # game
+    #   switch monsters
+    #     blow up if monster is dead
+    #   attack monster
+    #     blow up if monster is dead
+    #
 
 
-Player chooses
-1- Change monster (any other living monsters)
-2- Attack
-
-Form submit
 
 # Version 2
 
