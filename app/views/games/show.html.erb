@@ -8,7 +8,11 @@
     <strong>Winner:</strong><%= @game.winner.inspect %><br/>
   <% else %>
     <strong>Current player:</strong>
-    <%= @game.current_player.inspect %>
+    <%= @game.current_player.inspect %><br/>
+    <strong>Current monster:</strong>
+    <%= @game.current_monster.inspect %><br/>
+    <strong>Other monster:</strong>
+    <%= @game.other_monster.inspect %><br/>
   <% end %>
 </p>
 

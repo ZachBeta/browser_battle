@@ -82,4 +82,12 @@ class Game < ActiveRecord::Base
   def current_monster_is_ko?
     current_player.current_monster_is_ko?
   end
+
+  def current_monster
+    current_player.current_monster
+  end
+
+  def other_monster
+    other_player.current_monster
+  end
 end

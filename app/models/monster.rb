@@ -2,7 +2,7 @@ class Monster < ActiveRecord::Base
   default_scope { order('created_at DESC') }
 
   def attack!(target_monster)
-    damage = calculate_roll_damage
+    damage = calculate_roll_damage(target_monster)
     if damage >= target_monster.health
       # TODO check for target_monster having 0 health
       target_monster.health = 0
@@ -12,44 +12,40 @@ class Monster < ActiveRecord::Base
     end
     target_monster.save
 
-    { :message => "Attacked for #{damage} damage" }
+    { :message => "#{monster_type} attacked #{target_monster.monster_type} for #{damage} damage. Damage modifier: #{damage_modifier(target_monster)}" }
   end
 
   def is_ko?
     status == 'ko'
   end
 
-  def calculate_roll_damage
+  def calculate_roll_damage(target_monster)
     roll = rand(20)
-    damage = roll * damage_modifier
-    damage
+    damage = roll * damage_modifier(target_monster)
+    damage.floor
   end
 
-  def damage_modifier
-    1
+  def damage_modifier(target_monster)
+    if monster_type == 'rock' && target_monster.monster_type == 'rock'
+      1
+    elsif monster_type == 'rock' && target_monster.monster_type == 'paper'
+      0.75
+    elsif monster_type == 'rock' && target_monster.monster_type == 'scissors'
+      1.25
+    elsif monster_type == 'paper' && target_monster.monster_type == 'rock'
+      1.25
+    elsif monster_type == 'paper' && target_monster.monster_type == 'paper'
+      1
+    elsif monster_type == 'paper' && target_monster.monster_type == 'scissors'
+      0.75
+    elsif monster_type == 'scissors' && target_monster.monster_type == 'rock'
+      0.75
+    elsif monster_type == 'scissors' && target_monster.monster_type == 'paper'
+      1.25
+    elsif monster_type == 'scissors' && target_monster.monster_type == 'scissors'
+      1
+    else
+      1
+    end
   end
-
-  # def damage_modifier
-  #   if current_player.current_monster == 'rock' && other_player.current_monster == 'rock'
-  #     1
-  #   elsif current_player.current_monster == 'rock' && other_player.current_monster == 'paper'
-  #     0.75
-  #   elsif current_player.current_monster == 'rock' && other_player.current_monster == 'scissors'
-  #     1.25
-  #   elsif current_player.current_monster == 'paper' && other_player.current_monster == 'rock'
-  #     1.25
-  #   elsif current_player.current_monster == 'paper' && other_player.current_monster == 'paper'
-  #     1
-  #   elsif current_player.current_monster == 'paper' && other_player.current_monster == 'scissors'
-  #     0.75
-  #   elsif current_player.current_monster == 'scissors' && other_player.current_monster == 'rock'
-  #     0.75
-  #   elsif current_player.current_monster == 'scissors' && other_player.current_monster == 'paper'
-  #     1.25
-  #   elsif current_player.current_monster == 'scissors' && other_player.current_monster == 'scissors'
-  #     1
-  #   else
-  #     1
-  #   end
-  # end
 end
