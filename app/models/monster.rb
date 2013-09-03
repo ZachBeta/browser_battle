@@ -3,7 +3,13 @@ class Monster < ActiveRecord::Base
 
   def attack!(target_monster)
     damage = calculate_roll_damage
-    target_monster.health -= damage
+    if damage >= target_monster.health
+      # TODO check for target_monster having 0 health
+      target_monster.health = 0
+      target_monster.status = "ko"
+    else
+      target_monster.health -= damage
+    end
     target_monster.save
 
     { :message => "Attacked for #{damage} damage" }

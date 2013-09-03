@@ -18,14 +18,25 @@ describe Player do
         previous_monster = player.monsters.create(:status => 'active')
         switching_monster = player.monsters.create
 
-        p previous_monster
-        p switching_monster
-
         player.switch_monsters!(switching_monster.id)
 
         player.current_monster.should == switching_monster
         Monster.find(previous_monster.id).status.should_not == 'active'
         Monster.find(switching_monster.id).status.should == 'active'
+      end
+    end
+  end
+
+  describe '#has_lost?' do
+    context 'player has all monsters ko' do
+      it 'returns true' do
+        player = Player.new
+        player.build_default_monsters
+        player.monsters.each do |monster|
+          monster.status = 'ko'
+        end
+
+        player.has_lost?.should == true
       end
     end
   end

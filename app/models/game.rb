@@ -54,4 +54,28 @@ class Game < ActiveRecord::Base
   def notice_message
     @notice_message ||= 'Game updated, yo!'
   end
+
+  def over?
+    player_one.has_lost? || player_two.has_lost?
+  end
+
+  def loser
+    if player_one.has_lost?
+      player_one
+    elsif player_two.has_lost?
+      player_two
+    else
+      nil
+    end
+  end
+
+  def winner
+    if player_one.has_lost?
+      player_two
+    elsif player_two.has_lost?
+      player_one
+    else
+      nil
+    end
+  end
 end

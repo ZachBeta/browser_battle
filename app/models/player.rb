@@ -25,8 +25,6 @@ class Player < ActiveRecord::Base
       new_monster.status = 'active'
       new_monster.save
 
-      p old_monster
-      p new_monster
       return { :message => "switched to #{new_monster.monster_type}" }
     else
       return { :message => "That monster doesn't exist for player #{current_player.id}, turn skipped :-(" }
@@ -35,5 +33,9 @@ class Player < ActiveRecord::Base
 
   def attack!(other_player)
     current_monster.attack!(other_player.current_monster)
+  end
+
+  def has_lost?
+    monsters.where(:status => 'ko').count == monsters.count
   end
 end
