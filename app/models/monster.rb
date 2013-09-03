@@ -15,6 +15,10 @@ class Monster < ActiveRecord::Base
     { :message => "Attacked for #{damage} damage" }
   end
 
+  def is_ko?
+    status == 'ko'
+  end
+
   def calculate_roll_damage
     roll = rand(20)
     damage = roll * damage_modifier

@@ -78,4 +78,8 @@ class Game < ActiveRecord::Base
       nil
     end
   end
+
+  def current_monster_is_ko?
+    current_player.current_monster_is_ko?
+  end
 end

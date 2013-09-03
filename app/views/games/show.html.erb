@@ -1,12 +1,19 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Current player:</strong>
-  <%= @game.current_player.inspect %>
+  <strong>Game status:</strong>
+</p>
+<p>
+  <% if @game.over? %>
+    <strong>Winner:</strong><%= @game.winner.inspect %><br/>
+  <% else %>
+    <strong>Current player:</strong>
+    <%= @game.current_player.inspect %>
+  <% end %>
 </p>
 
-  <% @game.players.each do |player| %>
-    <p>
+<% @game.players.each do |player| %>
+  <p>
     <%= player.inspect %>
     <ol>
       <% player.monsters.each do |monster| %>
@@ -16,16 +23,29 @@
       <% end %>
     </ol>
   </p>
-  <% end %>
-
-<%= form_for(@game) do |f| %>
-  <%= f.hidden_field :action, :value => 'switch' %>
-  <%= f.select :switch_monster, @game.current_player.monsters.map { |monster| ["#{monster.monster_type}: #{monster.health}HP", monster.id] } %>
-  <%= f.submit 'Switch!' %>
 <% end %>
-<%= form_for(@game) do |f| %>
-  <%= f.hidden_field :action, :value => 'attack' %>
-  <%= f.submit 'Attack!' %>
+
+<% if @game.over? %>
+  <p>Game is over. No actions to take</p>
+<% else %>
+  <% if @game.current_player.available_monsters.present? %>
+    <%= form_for(@game) do |f| %>
+      <%= f.hidden_field :action, :value => 'switch' %>
+      <%= f.select :switch_monster,
+        @game.current_player.available_monsters.map { |monster| ["#{monster.monster_type}: #{monster.health}HP", monster.id] } %>
+      <%= f.submit 'Switch!' %>
+    <% end %>
+  <% else %>
+    <p>Can't switch, this is your last monster</p>
+  <% end %>
+  <% if @game.current_monster_is_ko? %>
+    <p>Can't attack, monster is ko'd</p>
+  <% else %>
+    <%= form_for(@game) do |f| %>
+      <%= f.hidden_field :action, :value => 'attack' %>
+      <%= f.submit 'Attack!' %>
+    <% end %>
+  <% end %>
 <% end %>
 
 <%= link_to 'Back', games_path %>
